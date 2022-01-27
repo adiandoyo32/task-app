@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import InputField from './components/InputField';
+import TaskList from './components/TaskList';
+import Task from './models/Task';
 
 function App() {
+  const [name, setName] = useState<string>('')
+  const [tasks, setTasks] = useState<Array<Task>>([])
+
+  const addTask = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (name) {
+      console.log(name);
+      
+      setTasks([...tasks, { id: Date.now(), name, isDone: false }])
+      setName('')
+    }
+    console.log(tasks);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Task</h1>
+      <InputField name={name} setName={setName} addTask={addTask} />
+      <TaskList tasks={tasks} setTasks={setTasks} />
     </div>
   );
 }
